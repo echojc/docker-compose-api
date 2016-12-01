@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"os/exec"
 	"regexp"
 )
@@ -63,6 +64,8 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("handling request", r.URL.Path)
+
 	var err error
 	for _, command := range sequences[sequence] {
 		cmd := exec.Command(h.config.Binary, commands[command]...)
@@ -71,6 +74,9 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 		if err = cmd.Run(); err != nil {
 			break
 		}
+
+		output, _ := cmd.CombinedOutput()
+		os.Stdout.Write(output)
 	}
 
 	if err != nil {
