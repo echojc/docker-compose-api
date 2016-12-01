@@ -1,0 +1,7 @@
+binary: /usr/local/bin/docker-compose
+port: 8778
+services:
+  core-apidoc:
+    path: /opt/core-apidoc
+  core-server:
+    path: /opt/core-server
